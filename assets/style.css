@@ -1,0 +1,26 @@
+.jumbotron {
+    text-align: center;
+    background: maroon;
+    color: white;
+}
+
+th, label{
+    font-weight: bolder;
+}
+
+.top {
+    background: lightgray;
+    color: darkslategray;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+
+}
+
+.section {
+    border: 1px solid lightblue;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+
