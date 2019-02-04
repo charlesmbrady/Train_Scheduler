@@ -42,49 +42,29 @@ $("#submit").on("click", function(e) {
 
 database.ref().on("child_added", function (snapshot) {
     var snap = snapshot.val();
-    var first = moment().format(snap.firstTrainTime, "HH:mm");
     var frequency = parseInt(snap.frequency);
-    
-    var nextTrainTime= first;
-    
-    var a = moment().format("HH:mm");
-    console.log("now is " + a);
-    console.log(first);
-    var difference = a.diff(moment(), "minutes");
-    //TODO:
-    console.log("the difference is : " + difference);
-    
 
     
-   /*
-    while( < 0) {                   //while first is in the past, add frequency minutes...
-        nextTrainTime.add(frequency, "m");
-        console.log(nextTrainTime);                                
-    }
+  
+    var format = "hh:mm A";
+    var first = moment(snap.firstTrainTime, format);
+    var nextTrainTime = first;
 
- */   
-    
-
-
-    
+    while(nextTrainTime.diff(moment(), "minutes") < 0){
+        nextTrainTime = nextTrainTime.add(frequency, "minutes");
+    };
+    var minutesAway = nextTrainTime.diff(moment(), "minutes");
     
     
-
-    
-
-
     var td1 = $("<td>").text(snap.name);
     var td2 = $("<td>").text(snap.destination);
     var td3 = $("<td>").text(snap.frequency);
-    //var td4 = $("<td>").text(nextArrival);
-    //var td5 = $("<td>").text(minutesAway);
-    
-
+    var td4 = $("<td>").text(nextTrainTime.format(format));
+    var td5 = $("<td>").text(minutesAway);
 
     var row = $("<tr>");
-    row.append(td1, td2, td3);
+    row.append(td1, td2, td3, td4, td5);
     $("tbody").append(row);
-
 
 });
 
