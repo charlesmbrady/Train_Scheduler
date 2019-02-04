@@ -13,16 +13,16 @@
 
   var name = "";
   var destination = "";
-  var time = "";
+  var firstTrainTime = "";
   var frequency;
-
 
 $("#submit").on("click", function(e) {
     e.preventDefault();
+    //TODO: make sure firstTrainTime is valid input format HH:mm and less than 24:00
     
     name = $("#inputName").val().trim();
     destination = $("#inputDestination").val().trim();
-    time = $("#inputTime").val().trim();
+    firstTrainTime = $("#inputTime").val().trim();
     frequency = $("#inputFrequency").val().trim();
 
     $("#inputName").val('');
@@ -34,7 +34,7 @@ $("#submit").on("click", function(e) {
     database.ref().push({
         name: name,
         destination: destination,
-        time: time,
+        firstTrainTime: firstTrainTime,
         frequency: frequency
     });
 
@@ -42,18 +42,35 @@ $("#submit").on("click", function(e) {
 
 database.ref().on("child_added", function (snapshot) {
     var snap = snapshot.val();
-    var row = $("<tr>");
+    var first = moment().format(snap.firstTrainTime, "HH:mm");
+    var frequency = parseInt(snap.frequency);
+    
+    var nextTrainTime= first;
+    
+    var a = moment().format("HH:mm");
+    console.log("now is " + a);
+    console.log(first);
+    var difference = a.diff(moment(), "minutes");
+    //TODO:
+    console.log("the difference is : " + difference);
     
 
-    /*convertedDate = moment(snap.startDate, "MM/DD/YYYY")
-    monthsWorked = parseInt(monthsWorked) ;
-    totalBilled = parseInt(totalBilled) ;
-    monthsWorked = convertedDate.diff(moment(), "months") * -1;
-    totalBilled = snap.monthlyRate * monthsWorked;
+    
+   /*
+    while( < 0) {                   //while first is in the past, add frequency minutes...
+        nextTrainTime.add(frequency, "m");
+        console.log(nextTrainTime);                                
+    }
 
-    console.log(monthsWorked);
-    console.log(totalBilled);
-    */
+ */   
+    
+
+
+    
+    
+    
+
+    
 
 
     var td1 = $("<td>").text(snap.name);
@@ -64,7 +81,7 @@ database.ref().on("child_added", function (snapshot) {
     
 
 
-
+    var row = $("<tr>");
     row.append(td1, td2, td3);
     $("tbody").append(row);
 
